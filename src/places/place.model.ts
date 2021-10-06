@@ -9,7 +9,7 @@ export interface Place {
     status: string;
 }
 
-export enum PalceStatus {
+export enum PlaceStatus {
     ACTIVE = 'Funcionando',
     INACTIVE = 'Fechado',
     DISABLED = 'Fechado Permanentemente',
