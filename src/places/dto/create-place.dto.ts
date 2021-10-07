@@ -5,16 +5,16 @@ export class CreatePlaceDto {
     @IsNotEmpty({ message:'O campo nome é obrigatório' })
     name: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message:'O Site nome é obrigatório' })
     @IsFQDN()
     site: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message:'O Endereço nome é obrigatório' })
     address: string;
 
     image: string;
     ticket: string;
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message:'O descrição nome é obrigatório' })
     description: string;
 }

@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PlaceStatus, Place } from './place.model';
 import {v4 as uuid} from 'uuid';
 import { CreatePlaceDto } from './dto/create-place.dto';
+import { GetPlacesFilterDto } from './dto/get-places-filter.dto';
+import { UpdatePlaceProfileDto } from './dto/update-place-profile.dto';
 
 @Injectable()
 export class PlacesService {
@@ -10,6 +12,32 @@ export class PlacesService {
     getAllPlaces(): Place[] {
         return this.places;
     }
+
+    getPlacesWithFilters(filterDto: GetPlacesFilterDto): Place[] {
+        const { status, search } = filterDto;
+    
+        let places = this.getAllPlaces();
+    
+        if (status) {
+          places = places.filter((p) => p.status === status);
+        }
+    
+        if (search) {
+          places = places.filter((place) => {
+            const s: string = search.toLocaleLowerCase();
+            if (
+              place.name.toLowerCase().includes(s) ||
+              place.description.toLowerCase().includes(s) ||
+              place.address.toLowerCase().includes(s) ||
+              place.site.toLowerCase().includes(s)
+            ) {
+              return true;
+            }
+            return false;
+          });
+        }
+        return places;
+      }
 
     getPlaceById(id: string): Place {
         const found =  this.places.find((place) => place.id === id);
@@ -49,7 +77,21 @@ export class PlacesService {
         return place;
     }
 
-    //updatePlace(): Place {
+    updatePlaceProfile(
+        id: string,
+        updatePlaceProfileDto: UpdatePlaceProfileDto,
+    ): Place {
+        const place = this.getPlaceById(id);
+        const { name, site, address, image, ticket, description} = 
+        updatePlaceProfileDto;
 
-    //}
+        place.name = name;
+        place.site = site;
+        place.address = address;
+        place.image = image;
+        place.ticket = ticket;
+        place.description = description;
+
+        return place;
+    }
 }
