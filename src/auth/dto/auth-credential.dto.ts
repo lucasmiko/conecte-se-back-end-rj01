@@ -1,4 +1,4 @@
-import { IsString, MaxLength, MinLength } from "class-validator";
+import { IsString, Matches, MaxLength, MinLength } from "class-validator";
 
 export class AuthCredentialDto {
     @IsString()
@@ -9,5 +9,6 @@ export class AuthCredentialDto {
     @IsString()
     @MinLength(8)
     @MaxLength(32)
+    @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {message: 'sua senha esta fraca',})
     password: string;
 }
